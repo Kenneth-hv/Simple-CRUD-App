@@ -22,7 +22,7 @@
     </View>
     <!-- Content -->
     <View class="content">
-      <!-- Insert -->
+      <!-- User inputs -->
       <Text class="subtitle-text">Insert, Update or Delete User</Text>
       <View class="user-panel">
         <Text-input
@@ -141,6 +141,7 @@ export default {
     delete_: { id: "" },
   },
   methods: {
+    // Checks connections to the DB.
     checkForConnection() {
       let self = this;
       axios
@@ -153,12 +154,14 @@ export default {
         });
     },
 
+    // Updates the user list. (List displayed on screen by Vue).
     updateUserList() {
       axios.get(serverAddress + "/users").then((res) => {
         this.usersList = res.data;
       });
     },
 
+    //Sets the pressed user from list into the selected user to allow Update and Delete.
     selectUser(user) {
       this.selected_user.id = user.id.toString();
       this.selected_user.first_name = user.first_name;
@@ -166,6 +169,7 @@ export default {
       this.selected_user.email = user.email;
     },
 
+    // HTTP POST with the user to insert
     insertUser() {
       axios
         .post(serverAddress + "/users/insert", { user: this.selected_user })
@@ -176,6 +180,7 @@ export default {
         });
     },
 
+    //  HTTP POST Updates the User with the selected ID with the selected values.
     updateUser() {
       axios
         .post(serverAddress + "/users/update", { user: this.selected_user })
@@ -186,6 +191,7 @@ export default {
         });
     },
 
+    //  HTTP POST Deletes the User with the selected ID.
     deleteUser() {
       axios
         .post(serverAddress + "/users/delete", { user: this.selected_user })
@@ -196,6 +202,7 @@ export default {
         });
     },
 
+    // Clears the user inputs.
     clearUser() {
       this.selected_user.id = "";
       this.selected_user.first_name = "";
@@ -203,7 +210,8 @@ export default {
       this.selected_user.email = "";
     },
   },
-  mounted() {
+  mounted() { 
+    // When ready, start clock and check for conection every 3 seconds.
     this.checkForConnection();
     setInterval(this.checkForConnection, 3000);
   },
@@ -211,7 +219,9 @@ export default {
 </script>
 
 
+
 <style>
+
 .main {
   background-color: #333;
   height: 100%;
